@@ -1,0 +1,60 @@
+# Build e artefatos do .NET
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.log
+*.pdb
+*.cache
+*.dbmdl
+*.bak
+*.db
+*.ldf
+
+# Configurações de usuário do Visual Studio / Rider
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.idea/
+*.iml
+
+# Configurações de build
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Logs
+logs/
+*.log
+
+# Test results
+TestResult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# Pacotes
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+
+# Secrets / senhas
+secrets.json
+appsettings.Development.json
+appsettings.*.local.json
+
+# Docker
+*.pid
+.env
+docker-compose.override.yml
+
+# Uploads (gerados pela aplicação)
+uploads/
+
+# OS específicos
+.DS_Store
+Thumbs.db

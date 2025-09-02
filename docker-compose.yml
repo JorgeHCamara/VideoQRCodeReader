@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  video-qr-api:
+    build: ./VideoQRCodeReader
+    ports:
+      - "5000:8080"
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"   # conexão da aplicação
+      - "15672:15672" # painel de administração

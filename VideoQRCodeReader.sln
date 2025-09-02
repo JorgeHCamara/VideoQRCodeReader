@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoQRCodeReader", "VideoQRCodeReader\VideoQRCodeReader.csproj", "{05F1ABC0-96B5-42E5-BC13-582C2BFD1089}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A4DC1B42-1F1E-4891-9669-73C0522416C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{BC48F502-588B-4EF4-9B27-383441172F2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web App", "Web App", "{D7AB8618-339F-4CBC-8992-92BBD93BBF7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoQRCodeReader.Application", "VideoQRCodeReader.Application\VideoQRCodeReader.Application.csproj", "{6EDDE593-5C37-4A0F-BBB1-56A4FDADE409}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoQRCodeReader.Domain", "VideoQRCodeReader.Domain\VideoQRCodeReader.Domain.csproj", "{92DE6338-EA65-47E2-ABAF-DF206747BB79}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05F1ABC0-96B5-42E5-BC13-582C2BFD1089}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05F1ABC0-96B5-42E5-BC13-582C2BFD1089}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05F1ABC0-96B5-42E5-BC13-582C2BFD1089}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05F1ABC0-96B5-42E5-BC13-582C2BFD1089}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EDDE593-5C37-4A0F-BBB1-56A4FDADE409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EDDE593-5C37-4A0F-BBB1-56A4FDADE409}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EDDE593-5C37-4A0F-BBB1-56A4FDADE409}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EDDE593-5C37-4A0F-BBB1-56A4FDADE409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92DE6338-EA65-47E2-ABAF-DF206747BB79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DE6338-EA65-47E2-ABAF-DF206747BB79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92DE6338-EA65-47E2-ABAF-DF206747BB79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92DE6338-EA65-47E2-ABAF-DF206747BB79}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{05F1ABC0-96B5-42E5-BC13-582C2BFD1089} = {D7AB8618-339F-4CBC-8992-92BBD93BBF7B}
+		{BC48F502-588B-4EF4-9B27-383441172F2C} = {A4DC1B42-1F1E-4891-9669-73C0522416C8}
+		{D7AB8618-339F-4CBC-8992-92BBD93BBF7B} = {A4DC1B42-1F1E-4891-9669-73C0522416C8}
+		{6EDDE593-5C37-4A0F-BBB1-56A4FDADE409} = {BC48F502-588B-4EF4-9B27-383441172F2C}
+		{92DE6338-EA65-47E2-ABAF-DF206747BB79} = {BC48F502-588B-4EF4-9B27-383441172F2C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {86D5867A-AB59-4E05-9691-503E052B88EF}
+	EndGlobalSection
+EndGlobal
