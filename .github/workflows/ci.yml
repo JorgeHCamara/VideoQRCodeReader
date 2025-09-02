@@ -1,0 +1,33 @@
+name: CI - Build and Test
+
+on:
+  push:
+    branches:
+      - "main"
+      - "develop/**"
+      - "feat/**"
+      - "fix/**"
+  pull_request:
+      branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore ./VideoQRCodeReader.sln
+
+      - name: Build
+        run: dotnet build ./VideoQRCodeReader.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test ./VideoQRCodeReader.sln --configuration Release --no-build --verbosity normal

@@ -21,8 +21,4 @@
     <ProjectReference Include="..\VideoQRCodeReader.Domain\VideoQRCodeReader.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\" />
-  </ItemGroup>
-
 </Project>

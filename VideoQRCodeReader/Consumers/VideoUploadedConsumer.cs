@@ -8,7 +8,7 @@ namespace VideoQRCodeReader.Consumers
         public async Task Consume(ConsumeContext<VideoUploadedEvent> context)
         {
             var message = context.Message;
-            Console.WriteLine($"📥 Vídeo recebido para processamento: {message.VideoId} - {message.FilePath}");
+            Console.WriteLine($"Vídeo recebido para processamento: {message.VideoId} - {message.FilePath}");
             await Task.CompletedTask;
         }
     }
