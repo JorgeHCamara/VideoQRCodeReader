@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VideoQRCodeReader.Application\VideoQRCodeReader.Application.csproj" />
-    <ProjectReference Include="..\VideoQRCodeReader.Domain\VideoQRCodeReader.Domain.csproj" />
     <ProjectReference Include="..\VideoQRCodeReader.Contracts\VideoQRCodeReader.Contracts.csproj" />
     <ProjectReference Include="..\VideoQRCodeReader.Infrastructure\VideoQRCodeReader.Infrastructure.csproj" />
   </ItemGroup>
