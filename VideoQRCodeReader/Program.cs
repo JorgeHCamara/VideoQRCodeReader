@@ -1,35 +1,16 @@
-using VideoQRCodeReader.Services.Interfaces;
-using VideoQRCodeReader.Services;
-using MassTransit;
-using VideoQRCodeReader.Consumers;
+using VideoQRCodeReader.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IFileStorageService, FileStorageService>();
-builder.Services.AddScoped<IMessageQueueService, MassTransitQueueService>();
-
-builder.Services.AddMassTransit(x =>
-{
-    x.AddConsumer<VideoUploadedConsumer>();
-
-    x.UsingRabbitMq((context, cfg) =>
-    {
-        cfg.Host(builder.Configuration["RabbitMQ:Host"] ?? "rabbitmq", "/", h =>
-        {
-            h.Username(builder.Configuration["RabbitMQ:User"] ?? "guest");
-            h.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
-        });
-
-        cfg.ConfigureEndpoints(context);
-    });
-});
+// Add Infrastructure services
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddMassTransitInfrastructure(builder.Configuration, includeConsumers: false);
 
 
 var app = builder.Build();

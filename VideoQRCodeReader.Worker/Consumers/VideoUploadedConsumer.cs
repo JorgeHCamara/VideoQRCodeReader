@@ -1,7 +1,7 @@
-﻿using MassTransit;
-using VideoQRCodeReader.Application.DTOs;
+using MassTransit;
+using VideoQRCodeReader.Contracts.Events;
 
-namespace VideoQRCodeReader.Consumers
+namespace VideoQRCodeReader.Worker.Consumers
 {
     public class VideoUploadedConsumer : IConsumer<VideoUploadedEvent>
     {

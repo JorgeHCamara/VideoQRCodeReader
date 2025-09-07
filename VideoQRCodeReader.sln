@@ -15,6 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoQRCodeReader.Applicati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoQRCodeReader.Domain", "VideoQRCodeReader.Domain\VideoQRCodeReader.Domain.csproj", "{92DE6338-EA65-47E2-ABAF-DF206747BB79}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoQRCodeReader.Worker", "VideoQRCodeReader.Worker\VideoQRCodeReader.Worker.csproj", "{C9B4B640-3F4D-4B45-8B71-2B8C4748B76C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoQRCodeReader.Contracts", "VideoQRCodeReader.Contracts\VideoQRCodeReader.Contracts.csproj", "{A2F8B5E1-6C3D-4F7E-9A8B-1D5C2E4F6789}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoQRCodeReader.Infrastructure", "VideoQRCodeReader.Infrastructure\VideoQRCodeReader.Infrastructure.csproj", "{DF5A5514-F442-4D33-B1DA-C758AC258FE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +39,18 @@ Global
 		{92DE6338-EA65-47E2-ABAF-DF206747BB79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92DE6338-EA65-47E2-ABAF-DF206747BB79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92DE6338-EA65-47E2-ABAF-DF206747BB79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9B4B640-3F4D-4B45-8B71-2B8C4748B76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9B4B640-3F4D-4B45-8B71-2B8C4748B76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9B4B640-3F4D-4B45-8B71-2B8C4748B76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9B4B640-3F4D-4B45-8B71-2B8C4748B76C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2F8B5E1-6C3D-4F7E-9A8B-1D5C2E4F6789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2F8B5E1-6C3D-4F7E-9A8B-1D5C2E4F6789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2F8B5E1-6C3D-4F7E-9A8B-1D5C2E4F6789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2F8B5E1-6C3D-4F7E-9A8B-1D5C2E4F6789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF5A5514-F442-4D33-B1DA-C758AC258FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF5A5514-F442-4D33-B1DA-C758AC258FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF5A5514-F442-4D33-B1DA-C758AC258FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF5A5514-F442-4D33-B1DA-C758AC258FE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +61,9 @@ Global
 		{D7AB8618-339F-4CBC-8992-92BBD93BBF7B} = {A4DC1B42-1F1E-4891-9669-73C0522416C8}
 		{6EDDE593-5C37-4A0F-BBB1-56A4FDADE409} = {BC48F502-588B-4EF4-9B27-383441172F2C}
 		{92DE6338-EA65-47E2-ABAF-DF206747BB79} = {BC48F502-588B-4EF4-9B27-383441172F2C}
+		{C9B4B640-3F4D-4B45-8B71-2B8C4748B76C} = {BC48F502-588B-4EF4-9B27-383441172F2C}
+		{A2F8B5E1-6C3D-4F7E-9A8B-1D5C2E4F6789} = {BC48F502-588B-4EF4-9B27-383441172F2C}
+		{DF5A5514-F442-4D33-B1DA-C758AC258FE5} = {BC48F502-588B-4EF4-9B27-383441172F2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {86D5867A-AB59-4E05-9691-503E052B88EF}
