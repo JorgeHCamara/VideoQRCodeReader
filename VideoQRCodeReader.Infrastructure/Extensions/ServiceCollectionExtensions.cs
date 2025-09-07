@@ -10,10 +10,13 @@ namespace VideoQRCodeReader.Infrastructure.Extensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            // Register infrastructure services
+            // Register infrastructure services following SOLID principles
             services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IMessageQueueService, MassTransitQueueService>();
+            
+            // Separate services for video processing and QR code detection (SRP)
             services.AddScoped<IVideoProcessingService, FFMpegVideoProcessingService>();
+            services.AddScoped<IQrCodeDetectionService, QrCodeDetectionService>();
 
             return services;
         }
@@ -38,7 +41,13 @@ namespace VideoQRCodeReader.Infrastructure.Extensions
                     {
                         h.Username(user);
                         h.Password(pass);
+                        
+                        // Add connection retry settings for better resilience
+                        h.RequestedConnectionTimeout(TimeSpan.FromSeconds(30));
                     });
+
+                    // Configure message retry policy for connection issues
+                    cfg.UseMessageRetry(r => r.Exponential(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(2)));
 
                     if (includeConsumers)
                     {

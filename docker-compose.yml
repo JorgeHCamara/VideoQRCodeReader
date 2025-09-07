@@ -1,13 +1,33 @@
-version: '3.9'
 services:
   video-qr-api:
-    build: ./VideoQRCodeReader
+    build:
+      context: .
+      dockerfile: VideoQRCodeReader/Dockerfile
     ports:
       - "5000:8080"
     volumes:
       - ./uploads:/app/uploads
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RabbitMQ__Host=rabbitmq
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    restart: unless-stopped
+
+  video-qr-worker:
+    build:
+      context: .
+      dockerfile: VideoQRCodeReader.Worker/Dockerfile
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RabbitMQ__Host=rabbitmq
+    restart: unless-stopped
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -15,5 +35,16 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     ports:
-      - "5672:5672"   # conex„o da aplicaÁ„o
-      - "15672:15672" # painel de administraÁ„o
+      - "5672:5672" # conex√£o da aplica√ß√£o
+      - "15672:15672" # painel de administra√ß√£o
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  rabbitmq_data:

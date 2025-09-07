@@ -8,15 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FFMpegCore" Version="5.2.0" />
     <PackageReference Include="MassTransit" Version="8.5.2" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
+    <PackageReference Include="ZXing.Net" Version="0.16.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VideoQRCodeReader.Contracts\VideoQRCodeReader.Contracts.csproj" />
+    <ProjectReference Include="..\VideoQRCodeReader.Domain\VideoQRCodeReader.Domain.csproj" />
   </ItemGroup>
 
 </Project>

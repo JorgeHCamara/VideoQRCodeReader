@@ -1,11 +1,15 @@
 using MassTransit;
 using VideoQRCodeReader.Worker.Consumers;
 using VideoQRCodeReader.Infrastructure.Extensions;
+using VideoQRCodeReader.Application.Services;
 
 var builder = Host.CreateApplicationBuilder(args);
 
 // Add Infrastructure services for Worker
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// Add Application services
+builder.Services.AddScoped<IVideoAnalysisService, VideoAnalysisService>();
 
 builder.Services.AddMassTransit(x =>
 {
