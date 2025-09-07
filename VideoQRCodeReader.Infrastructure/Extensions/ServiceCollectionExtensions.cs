@@ -13,6 +13,7 @@ namespace VideoQRCodeReader.Infrastructure.Extensions
             // Register infrastructure services following SOLID principles
             services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IMessageQueueService, MassTransitQueueService>();
+            services.AddSingleton<IVideoStatusService, InMemoryVideoStatusService>();
             
             // Separate services for video processing and QR code detection (SRP)
             services.AddScoped<IVideoProcessingService, FFMpegVideoProcessingService>();
@@ -25,10 +26,12 @@ namespace VideoQRCodeReader.Infrastructure.Extensions
         {
             services.AddMassTransit(x =>
             {
-                // Only add consumers if specified (for Worker project)
+                // Add consumers if specified (for Worker project or API with status tracking)
                 if (includeConsumers)
                 {
-                    // Consumer registration will be handled by the Worker project
+                    // Consumer registration will be handled by the calling project
+                    // Worker registers VideoUploadedConsumer
+                    // API registers ProcessingStatusConsumer and CompletedEventConsumer
                 }
 
                 x.UsingRabbitMq((context, cfg) =>

@@ -9,13 +9,16 @@ namespace VideoQRCodeReader.Application.Services
     {
         private readonly IFileStorageService _fileStorageService;
         private readonly IMessageQueueService _messageQueueService;
+        private readonly IVideoStatusService _videoStatusService;
 
         public VideoUploadService(
             IFileStorageService fileStorageService, 
-            IMessageQueueService messageQueueService)
+            IMessageQueueService messageQueueService,
+            IVideoStatusService videoStatusService)
         {
             _fileStorageService = fileStorageService;
             _messageQueueService = messageQueueService;
+            _videoStatusService = videoStatusService;
         }
 
         public async Task<VideoUploadResult> ProcessUploadAsync(IFormFile file)
@@ -38,6 +41,9 @@ namespace VideoQRCodeReader.Application.Services
             };
 
             await _messageQueueService.PublishAsync(videoEvent);
+
+            // Set initial status
+            await _videoStatusService.UpdateStatusAsync(videoId, "Queued", "Video uploaded and queued for processing");
 
             // Return result
             return new VideoUploadResult
