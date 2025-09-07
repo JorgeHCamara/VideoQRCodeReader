@@ -9,10 +9,14 @@ namespace VideoQRCodeReader.Controllers
     public class VideoController : ControllerBase
     {
         private readonly IVideoUploadService _videoUploadService;
+        private readonly IVideoQueryService _videoQueryService;
 
-        public VideoController(IVideoUploadService videoUploadService)
+        public VideoController(
+            IVideoUploadService videoUploadService,
+            IVideoQueryService videoQueryService)
         {
             _videoUploadService = videoUploadService;
+            _videoQueryService = videoQueryService;
         }
 
         [HttpPost("upload")]
@@ -38,34 +42,52 @@ namespace VideoQRCodeReader.Controllers
         [HttpGet("{videoId}/status")]
         public async Task<IActionResult> GetProcessingStatus(string videoId)
         {
-            // TODO: Implement status retrieval from repository/cache
-            // This will be implemented when we add the repository pattern
-            await Task.CompletedTask;
-            
-            return Ok(new
+            try
             {
-                VideoId = videoId,
-                Status = "Processing", // Placeholder - will be retrieved from storage
-                Message = "Video is being processed"
-            });
+                if (string.IsNullOrWhiteSpace(videoId))
+                {
+                    return BadRequest("Video ID is required");
+                }
+
+                var status = await _videoQueryService.GetVideoStatusAsync(videoId);
+                
+                if (status == null)
+                {
+                    return NotFound($"No processing status found for video ID: {videoId}");
+                }
+
+                return Ok(status);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error occurred: {ex.Message}");
+            }
         }
 
         [HttpGet("{videoId}/results")]
         public async Task<IActionResult> GetResults(string videoId)
         {
-            // TODO: Implement results retrieval from repository
-            // This will be implemented when we add the repository pattern
-            await Task.CompletedTask;
-            
-            return Ok(new
+            try
             {
-                VideoId = videoId,
-                Status = "Completed", // Placeholder - will be retrieved from storage
-                QrCodeDetections = new[]
+                if (string.IsNullOrWhiteSpace(videoId))
                 {
-                    new { Content = "Sample QR Code", TimestampSeconds = 1.5 }
+                    return BadRequest("Video ID is required");
                 }
-            });
+
+                var results = await _videoQueryService.GetVideoResultsAsync(videoId);
+                
+                if (results == null)
+                {
+                    return NotFound($"No video found with ID: {videoId}");
+                }
+
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Add proper logging
+                return StatusCode(500, $"Internal server error occurred: {ex.Message}");
+            }
         }
     }
 }

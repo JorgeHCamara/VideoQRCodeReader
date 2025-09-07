@@ -1,5 +1,7 @@
 using VideoQRCodeReader.Infrastructure.Extensions;
 using VideoQRCodeReader.Application.Services;
+using VideoQRCodeReader.Consumers;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +13,36 @@ builder.Services.AddSwaggerGen();
 
 // Add Infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddMassTransitInfrastructure(builder.Configuration, includeConsumers: false);
+
+// Add MassTransit with API-specific consumers
+builder.Services.AddMassTransit(x =>
+{
+    // Register API consumers for status tracking
+    x.AddConsumer<ProcessingStatusConsumer>();
+    x.AddConsumer<CompletedEventConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        var host = builder.Configuration["RabbitMQ:Host"] ?? "rabbitmq";
+        var user = builder.Configuration["RabbitMQ:User"] ?? "guest";
+        var pass = builder.Configuration["RabbitMQ:Password"] ?? "guest";
+
+        cfg.Host(host, "/", h =>
+        {
+            h.Username(user);
+            h.Password(pass);
+            h.RequestedConnectionTimeout(TimeSpan.FromSeconds(30));
+        });
+
+        cfg.UseMessageRetry(r => r.Exponential(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(2)));
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 // Add application services
 builder.Services.AddScoped<IVideoUploadService, VideoUploadService>();
 builder.Services.AddScoped<IVideoAnalysisService, VideoAnalysisService>();
+builder.Services.AddScoped<IVideoQueryService, VideoQueryService>();
 
 
 var app = builder.Build();
