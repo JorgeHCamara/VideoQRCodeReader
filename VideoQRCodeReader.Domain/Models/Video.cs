@@ -1,9 +1,5 @@
 namespace VideoQRCodeReader.Domain.Models
 {
-    /// <summary>
-    /// Core domain entity representing a video file in the system
-    /// Contains both business metadata and technical specifications
-    /// </summary>
     public class Video
     {
         // Business Properties (Identity & Tracking)

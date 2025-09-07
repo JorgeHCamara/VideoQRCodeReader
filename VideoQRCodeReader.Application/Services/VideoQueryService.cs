@@ -11,10 +11,12 @@ namespace VideoQRCodeReader.Application.Services
     public class VideoQueryService : IVideoQueryService
     {
         private readonly IVideoStatusService _videoStatusService;
+        private readonly IVideoResultsService _videoResultsService;
 
-        public VideoQueryService(IVideoStatusService videoStatusService)
+        public VideoQueryService(IVideoStatusService videoStatusService, IVideoResultsService videoResultsService)
         {
             _videoStatusService = videoStatusService;
+            _videoResultsService = videoResultsService;
         }
 
         public async Task<VideoStatusResponse?> GetVideoStatusAsync(string videoId)
@@ -40,7 +42,7 @@ namespace VideoQRCodeReader.Application.Services
             if (string.IsNullOrWhiteSpace(videoId))
                 return null;
 
-            var results = await _videoStatusService.GetCompletedResultsAsync(videoId);
+            var results = await _videoResultsService.GetCompletedResultsAsync(videoId);
             
             if (results != null)
             {
