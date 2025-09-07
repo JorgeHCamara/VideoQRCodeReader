@@ -15,6 +15,7 @@ builder.Services.AddMassTransitInfrastructure(builder.Configuration, includeCons
 
 // Add application services
 builder.Services.AddScoped<IVideoUploadService, VideoUploadService>();
+builder.Services.AddScoped<IVideoAnalysisService, VideoAnalysisService>();
 
 
 var app = builder.Build();
@@ -26,10 +27,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Redirect root to Swagger in Development
+if (app.Environment.IsDevelopment())
+{
+    app.MapGet("/", () => Results.Redirect("/swagger"));
+}
 
 app.Run();
