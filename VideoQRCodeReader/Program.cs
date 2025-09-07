@@ -1,4 +1,5 @@
 using VideoQRCodeReader.Infrastructure.Extensions;
+using VideoQRCodeReader.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ builder.Services.AddSwaggerGen();
 // Add Infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddMassTransitInfrastructure(builder.Configuration, includeConsumers: false);
+
+// Add application services
+builder.Services.AddScoped<IVideoUploadService, VideoUploadService>();
 
 
 var app = builder.Build();

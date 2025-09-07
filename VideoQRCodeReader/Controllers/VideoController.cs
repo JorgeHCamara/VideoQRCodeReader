@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VideoQRCodeReader.Contracts.Events;
-using VideoQRCodeReader.Infrastructure.Interfaces;
+using VideoQRCodeReader.Application.Services;
+using VideoQRCodeReader.Contracts.DTOs;
 
 namespace VideoQRCodeReader.Controllers
 {
@@ -8,38 +8,63 @@ namespace VideoQRCodeReader.Controllers
     [Route("api/videos")]
     public class VideoController : ControllerBase
     {
-        private readonly IFileStorageService _fileStorageService;
-        private readonly IMessageQueueService _messageQueueService;
+        private readonly IVideoUploadService _videoUploadService;
 
-        public VideoController(IFileStorageService fileStorageService, IMessageQueueService messageQueueService)
+        public VideoController(IVideoUploadService videoUploadService)
         {
-            _fileStorageService = fileStorageService;
-            _messageQueueService = messageQueueService;
+            _videoUploadService = videoUploadService;
         }
 
         [HttpPost("upload")]
         public async Task<IActionResult> UploadVideo(IFormFile file)
         {
-            if (file == null || (file.ContentType != "video/mp4" && file.ContentType != "video/x-msvideo"))
-                return BadRequest("Formato inválido. Use .mp4 ou .avi.");
-
-            var videoId = Guid.NewGuid().ToString();
-            var filePath = await _fileStorageService.SaveFileAsync(file, videoId);
-
-            var videoEvent = new VideoUploadedEvent
+            try
             {
-                VideoId = videoId,
-                FilePath = filePath,
-                UploadedAt = DateTime.UtcNow
-            };
+                var result = await _videoUploadService.ProcessUploadAsync(file);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Log error here - using ex for logging
+                // TODO: Add proper logging
+                return StatusCode(500, $"Internal server error occurred: {ex.Message}");
+            }
+        }
 
-            await _messageQueueService.PublishAsync(videoEvent);
-
+        [HttpGet("{videoId}/status")]
+        public async Task<IActionResult> GetProcessingStatus(string videoId)
+        {
+            // TODO: Implement status retrieval from repository/cache
+            // This will be implemented when we add the repository pattern
+            await Task.CompletedTask;
+            
             return Ok(new
             {
                 VideoId = videoId,
-                Status = "Na Fila",
-                FilePath = filePath
+                Status = "Processing", // Placeholder - will be retrieved from storage
+                Message = "Video is being processed"
+            });
+        }
+
+        [HttpGet("{videoId}/results")]
+        public async Task<IActionResult> GetResults(string videoId)
+        {
+            // TODO: Implement results retrieval from repository
+            // This will be implemented when we add the repository pattern
+            await Task.CompletedTask;
+            
+            return Ok(new
+            {
+                VideoId = videoId,
+                Status = "Completed", // Placeholder - will be retrieved from storage
+                QrCodeDetections = new[]
+                {
+                    new { Content = "Sample QR Code", TimestampSeconds = 1.5 }
+                }
             });
         }
     }
