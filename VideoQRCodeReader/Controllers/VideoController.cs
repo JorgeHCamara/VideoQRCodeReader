@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VideoQRCodeReader.Application.DTOs;
-using VideoQRCodeReader.Services.Interfaces;
+using VideoQRCodeReader.Contracts.Events;
+using VideoQRCodeReader.Infrastructure.Interfaces;
 
 namespace VideoQRCodeReader.Controllers
 {
