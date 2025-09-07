@@ -1,8 +1,5 @@
 namespace VideoQRCodeReader.Contracts.DTOs
 {
-    /// <summary>
-    /// Response DTO for QR code detection result
-    /// </summary>
     public class QrCodeDetectionResponse
     {
         public string Content { get; set; } = string.Empty;

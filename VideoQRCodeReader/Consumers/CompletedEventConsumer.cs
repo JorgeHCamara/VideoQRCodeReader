@@ -11,14 +11,14 @@ namespace VideoQRCodeReader.Consumers
     /// </summary>
     public class CompletedEventConsumer : IConsumer<CompletedEvent>
     {
-        private readonly IVideoStatusService _videoStatusService;
+        private readonly IVideoResultsService _videoResultsService;
         private readonly ILogger<CompletedEventConsumer> _logger;
 
         public CompletedEventConsumer(
-            IVideoStatusService videoStatusService,
+            IVideoResultsService videoResultsService,
             ILogger<CompletedEventConsumer> logger)
         {
-            _videoStatusService = videoStatusService;
+            _videoResultsService = videoResultsService;
             _logger = logger;
         }
 
@@ -29,7 +29,7 @@ namespace VideoQRCodeReader.Consumers
             _logger.LogInformation("Video processing completed for {VideoId}: {QrCount} QR codes detected", 
                 completedEvent.VideoId, completedEvent.QrCodeDetections.Count);
 
-            await _videoStatusService.StoreCompletedResultsAsync(completedEvent);
+            await _videoResultsService.StoreCompletedResultsAsync(completedEvent);
         }
     }
 }

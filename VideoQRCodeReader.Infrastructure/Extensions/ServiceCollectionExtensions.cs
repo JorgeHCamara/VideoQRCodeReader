@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MassTransit;
+using MongoDB.Driver;
 using VideoQRCodeReader.Infrastructure.Interfaces;
 using VideoQRCodeReader.Infrastructure.Services;
 
@@ -13,11 +14,43 @@ namespace VideoQRCodeReader.Infrastructure.Extensions
             // Register infrastructure services following SOLID principles
             services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IMessageQueueService, MassTransitQueueService>();
-            services.AddSingleton<IVideoStatusService, InMemoryVideoStatusService>();
+            
+            // Configure MongoDB (required)
+            services.AddMongoDB(configuration);
+            services.AddScoped<IVideoStatusService, VideoStatusService>();
+            services.AddScoped<IVideoResultsService, VideoResultsService>();
             
             // Separate services for video processing and QR code detection (SRP)
             services.AddScoped<IVideoProcessingService, FFMpegVideoProcessingService>();
             services.AddScoped<IQrCodeDetectionService, QrCodeDetectionService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddMongoDB(this IServiceCollection services, IConfiguration configuration)
+        {
+            var connectionString = configuration.GetConnectionString("MongoDB");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("MongoDB connection string is required. Please configure 'ConnectionStrings:MongoDB' in appsettings.json");
+            }
+
+            var databaseName = configuration["MongoDB:DatabaseName"];
+            if (string.IsNullOrEmpty(databaseName))
+            {
+                throw new InvalidOperationException("MongoDB database name is required. Please configure 'MongoDB:DatabaseName' in appsettings.json");
+            }
+
+            services.AddSingleton<IMongoClient>(provider =>
+            {
+                return new MongoClient(connectionString);
+            });
+
+            services.AddScoped<IMongoDatabase>(provider =>
+            {
+                var client = provider.GetRequiredService<IMongoClient>();
+                return client.GetDatabase(databaseName);
+            });
 
             return services;
         }
