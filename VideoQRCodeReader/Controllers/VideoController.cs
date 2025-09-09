@@ -5,7 +5,7 @@ using VideoQRCodeReader.Contracts.DTOs;
 namespace VideoQRCodeReader.Controllers
 {
     [ApiController]
-    [Route("api/videos")]
+    [Route("api/video")]
     public class VideoController : ControllerBase
     {
         private readonly IVideoUploadService _videoUploadService;

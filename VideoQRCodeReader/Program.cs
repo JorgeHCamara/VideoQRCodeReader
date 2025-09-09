@@ -1,12 +1,46 @@
 using VideoQRCodeReader.Infrastructure.Extensions;
 using VideoQRCodeReader.Application.Services;
 using VideoQRCodeReader.Consumers;
+using VideoQRCodeReader.Hubs;
+using VideoQRCodeReader.Services;
 using MassTransit;
+using Microsoft.AspNetCore.Server.IIS;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// Add SignalR
+builder.Services.AddSignalR();
+
+// Add SignalR notification service
+builder.Services.AddScoped<ISignalRNotificationService, SignalRNotificationService>();
+
+// Configure request size limits for file uploads
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.MaxRequestBodySize = 500 * 1024 * 1024; // 500MB
+});
+
+// Configure Kestrel for Docker
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 500 * 1024 * 1024; // 500MB
+});
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -54,11 +88,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Use CORS
+app.UseCors("AllowFrontend");
+
 //app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map SignalR Hub
+app.MapHub<VideoProcessingHub>("/videohub");
 
 // Redirect root to Swagger in Development
 if (app.Environment.IsDevelopment())

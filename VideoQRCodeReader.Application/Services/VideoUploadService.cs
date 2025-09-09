@@ -59,10 +59,27 @@ namespace VideoQRCodeReader.Application.Services
             if (file == null)
                 throw new ArgumentException("File is required");
 
-            if (file.ContentType != "video/mp4" && file.ContentType != "video/x-msvideo")
-                throw new ArgumentException("Invalid format. Use .mp4 or .avi");
+            if (file.Length == 0)
+                throw new ArgumentException("File is empty");
 
-            // Future: Add file size validation, codec validation, etc.
+            // Check file size (100MB limit to match frontend)
+            var maxSize = 100 * 1024 * 1024; // 100MB
+            if (file.Length > maxSize)
+                throw new ArgumentException("File size must be less than 100MB");
+
+            // Check file type - be more permissive to match frontend expectations
+            var allowedTypes = new[] { 
+                "video/mp4", 
+                "video/x-msvideo", 
+                "video/avi",
+                "video/mov",
+                "video/quicktime"
+            };
+
+            if (!allowedTypes.Contains(file.ContentType?.ToLower()))
+                throw new ArgumentException("Invalid format. Supported formats: MP4, AVI, MOV");
+
+            // Future: Add codec validation, etc.
         }
 
         private static string GenerateVideoId()
