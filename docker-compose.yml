@@ -1,4 +1,14 @@
 services:
+  video-qr-frontend:
+    build:
+      context: ./VideoQRCodeReader.Client/video-qr-code-reader-client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - video-qr-api
+    restart: unless-stopped
+
   video-qr-api:
     build:
       context: .

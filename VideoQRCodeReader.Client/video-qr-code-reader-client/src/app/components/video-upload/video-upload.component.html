@@ -1,0 +1,160 @@
+<div class="video-upload-container">
+  <div class="upload-card">
+    <h2>Video QR Code Reader</h2>
+    <p class="subtitle">Upload a video to detect and extract QR codes</p>
+
+    <!-- Connection Status -->
+    <div
+      class="connection-status"
+      [class.connected]="isSignalRConnected"
+      [class.disconnected]="!isSignalRConnected"
+    >
+      <span class="status-dot"></span>
+      {{
+        isSignalRConnected
+          ? "Real-time updates active"
+          : "Real-time updates unavailable"
+      }}
+    </div>
+
+    <!-- Upload Area -->
+    <div
+      class="upload-area"
+      [class.drag-over]="isDragOver"
+      [class.has-file]="selectedFile"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+    >
+      <div *ngIf="!selectedFile && !isUploading" class="upload-prompt">
+        <div class="upload-icon">📹</div>
+        <p class="upload-text">Drag and drop your video here</p>
+        <p class="upload-subtext">or</p>
+        <label class="file-input-label">
+          <input
+            type="file"
+            accept="video/*"
+            #fileInput
+            class="file-input"
+            (change)="onFileSelected($event)"
+          />
+          Choose File
+        </label>
+        <p class="file-requirements">Supported: MP4, AVI, MOV (Max 500MB)</p>
+      </div>
+
+      <div *ngIf="selectedFile && !isUploading" class="file-selected">
+        <div class="file-info">
+          <div class="file-icon">🎬</div>
+          <div class="file-details">
+            <p class="file-name">{{ selectedFile.name }}</p>
+            <p class="file-size">
+              {{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB
+            </p>
+          </div>
+        </div>
+        <div class="upload-actions">
+          <button class="btn btn-primary" (click)="uploadVideo()">
+            Upload Video
+          </button>
+          <button class="btn btn-secondary" (click)="reset()">Remove</button>
+        </div>
+      </div>
+
+      <div *ngIf="isUploading" class="upload-progress">
+        <div class="progress-info">
+          <div class="spinner"></div>
+          <p>Uploading... {{ uploadProgress }}%</p>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+      <span class="error-icon">⚠️</span>
+      {{ error }}
+    </div>
+
+    <!-- Upload Result -->
+    <div *ngIf="uploadResult" class="result-section">
+      <div class="success-message">
+        <span class="success-icon">✅</span>
+        Video uploaded successfully!<br />
+        Video ID: {{ uploadResult.videoId }}
+      </div>
+    </div>
+
+    <!-- Processing Status -->
+    <div *ngIf="videoStatus" class="status-section">
+      <div class="status-card">
+        <h3>Processing Status</h3>
+        <div
+          class="status-indicator"
+          [class]="videoStatus.status.toLowerCase()"
+        >
+          <span class="status-dot"></span>
+          {{ videoStatus.status }}
+        </div>
+        <p *ngIf="videoStatus.message" class="status-message">
+          {{ videoStatus.message }}
+        </p>
+      </div>
+    </div>
+
+    <!-- QR Code Results -->
+    <div
+      *ngIf="
+        videoResults &&
+        videoResults.qrCodeDetections &&
+        videoResults.qrCodeDetections.length > 0
+      "
+      class="results-section"
+    >
+      <div class="results-card">
+        <h3>QR Codes Detected</h3>
+        <div class="qr-codes-list">
+          <div
+            *ngFor="let qrCode of uniqueQrCodes; let i = index"
+            class="qr-code-item"
+          >
+            <div class="qr-code-header">
+              <span class="qr-code-number">QR Code {{ i + 1 }}</span>
+              <span class="qr-code-timestamp"
+                >First detected at {{ qrCode.timestampSeconds }}s</span
+              >
+            </div>
+            <div class="qr-code-content">
+              <strong>Content:</strong> {{ qrCode.content }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Results -->
+    <div
+      *ngIf="
+        videoResults &&
+        videoResults.qrCodeDetections &&
+        uniqueQrCodes.length === 0
+      "
+      class="no-results"
+    >
+      <div class="no-results-card">
+        <span class="no-results-icon">🔍</span>
+        <h3>No QR Codes Found</h3>
+        <p>No QR codes were detected in the uploaded video.</p>
+      </div>
+    </div>
+
+    <!-- Reset Button -->
+    <div *ngIf="uploadResult" class="reset-section">
+      <button class="btn btn-outline" (click)="reset()">
+        Upload Another Video
+      </button>
+    </div>
+  </div>
+</div>
