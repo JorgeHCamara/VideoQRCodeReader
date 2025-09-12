@@ -23,7 +23,7 @@ A complete video QR code detection system with Angular frontend, .NET Core API, 
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone [<repository-url>](https://github.com/JorgeHCamara/VideoQRCodeReader)
 cd VideoQRCodeReader
 ```
 
@@ -93,7 +93,7 @@ docker-compose down -v  # Removes volumes (data will be lost)
 - MP4
 - AVI
 - MOV
-- Maximum file size: 100MB
+- Maximum file size: 500MB
 
 ## Environment Variables
 
