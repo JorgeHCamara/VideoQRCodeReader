@@ -43,6 +43,9 @@ namespace VideoQRCodeReader.Worker.Consumers
                     Message = "Video analysis started"
                 });
 
+                // Small delay to ensure processing status is visible
+                await Task.Delay(500);
+
                 // Analyze video for QR codes
                 var qrCodeDetections = await _videoAnalysisService.AnalyzeVideoAsync(message.FilePath, message.VideoId);
 
