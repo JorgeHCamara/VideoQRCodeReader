@@ -63,8 +63,6 @@ namespace VideoQRCodeReader.Worker.Consumers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing video {VideoId}: {FilePath}", message.VideoId, message.FilePath);
-
-                // Publish error status
                 try
                 {
                     await _messageQueueService.PublishAsync(new ProcessingStatusEvent
